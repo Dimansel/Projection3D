@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="projection3d">
+    <output-path>$PROJECT_DIR$/out/artifacts/projection3d</output-path>
+    <root id="archive" name="projection3d.jar">
+      <element id="module-output" name="Projection3D" />
+    </root>
+  </artifact>
+</component>
