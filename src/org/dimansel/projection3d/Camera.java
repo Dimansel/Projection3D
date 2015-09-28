@@ -89,22 +89,22 @@ public class Camera {
         boolean flyDown = Keyboard.isKeyDown(KeyEvent.VK_SHIFT);
 
         if (keyUp && !keyDown) {
-            pos.x += len*Trig.cos(pitch)*Trig.sin(yaw);
+            pos.x += len*/*Trig.cos(pitch)*/Trig.sin(yaw);
             //pos.y -= len*Trig.sin(pitch);
-            pos.z += len*Trig.cos(pitch)*Trig.cos(yaw);
+            pos.z += len*/*Trig.cos(pitch)*/Trig.cos(yaw);
         }
         if (keyDown && !keyUp) {
-            pos.x -= len*Trig.cos(pitch)*Trig.sin(yaw);
+            pos.x -= len*/*Trig.cos(pitch)*/Trig.sin(yaw);
             //pos.y += len*Trig.sin(pitch);
-            pos.z -= len*Trig.cos(pitch)*Trig.cos(yaw);
+            pos.z -= len*/*Trig.cos(pitch)*/Trig.cos(yaw);
         }
         if (keyLeft && !keyRight) {
-            pos.x -= len*Trig.cos(pitch)*Trig.cos(yaw);
-            pos.z += len*Trig.cos(pitch)*Trig.sin(yaw);
+            pos.x -= len*/*Trig.cos(pitch)*/Trig.cos(yaw);
+            pos.z += len*/*Trig.cos(pitch)*/Trig.sin(yaw);
         }
         if (keyRight && !keyLeft) {
-            pos.x += len*Trig.cos(pitch)*Trig.cos(yaw);
-            pos.z -= len*Trig.cos(pitch)*Trig.sin(yaw);
+            pos.x += len*/*Trig.cos(pitch)*/Trig.cos(yaw);
+            pos.z -= len*/*Trig.cos(pitch)*/Trig.sin(yaw);
         }
         if (flyUp && !flyDown) {
             pos.y += len;
