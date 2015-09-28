@@ -88,14 +88,14 @@ public class Camera {
         boolean flyUp = Keyboard.isKeyDown(KeyEvent.VK_SPACE);
         boolean flyDown = Keyboard.isKeyDown(KeyEvent.VK_SHIFT);
 
-        if (keyUp && !keyLeft) {
+        if (keyUp && !keyDown) {
             pos.x += len*Trig.cos(pitch)*Trig.sin(yaw);
-            pos.y -= len*Trig.sin(pitch);
+            //pos.y -= len*Trig.sin(pitch);
             pos.z += len*Trig.cos(pitch)*Trig.cos(yaw);
         }
         if (keyDown && !keyUp) {
             pos.x -= len*Trig.cos(pitch)*Trig.sin(yaw);
-            pos.y += len*Trig.sin(pitch);
+            //pos.y += len*Trig.sin(pitch);
             pos.z -= len*Trig.cos(pitch)*Trig.cos(yaw);
         }
         if (keyLeft && !keyRight) {
