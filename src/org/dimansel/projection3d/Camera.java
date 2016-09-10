@@ -21,7 +21,7 @@ public class Camera {
         this.width = width;
         this.height = height;
         this.fov = fov;
-        aspect = width / height;
+        aspect = (double)width / height;
         nearPlane = near;
         farPlane = far;
     }

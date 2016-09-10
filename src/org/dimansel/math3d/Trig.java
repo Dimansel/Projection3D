@@ -14,6 +14,7 @@ public class Trig {
     }
 
     public static double cot(double a) {
-        return 1/Math.tan(Math.toRadians(a));
+        double ang = Math.toRadians(a);
+        return Math.cos(ang)/Math.sin(ang);
     }
 }
