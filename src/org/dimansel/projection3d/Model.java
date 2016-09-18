@@ -46,12 +46,13 @@ public class Model {
             Vertex3D v3 = cam.project(w3);
 
             if (v1 == null || v2 == null || v3 == null) continue;
-            Matrix m = new Matrix(3, 3, new double[]{
-                    v2.x-v1.x, v3.x-v1.x, v1.x,
-                    v2.y-v1.y, v3.y-v1.y, v1.y,
-                    0, 0, 1});
+            double[][] m = {
+                    {v2.x-v1.x, v3.x-v1.x, v1.x},
+                    {v2.y-v1.y, v3.y-v1.y, v1.y},
+                    {0, 0, 1}
+            };
 
-            if (m.getDeterminant3x3() >= 0 || !backFaceCulling) {
+            if (Matrix.det3(m) >= 0 || !backFaceCulling) {
                 if (gouraudShading) {
                     Color c1 = applyGouraudShading(w1, lightPos, vertexNormals.get(faces.get(a).n - 1));
                     Color c2 = applyGouraudShading(w2, lightPos, vertexNormals.get(faces.get(a + 1).n - 1));

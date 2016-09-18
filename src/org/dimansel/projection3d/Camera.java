@@ -40,17 +40,18 @@ public class Camera {
         double a = farPlane / (farPlane - nearPlane);
         double b = -nearPlane * farPlane / (farPlane - nearPlane);
 
-        Matrix ver = new Matrix(1, 4, new double[] { v.x, v.y, v.z, 1 });
-        Matrix projection = new Matrix(4, 4, new double[] {
-                h, 0, 0, 0,
-                0, w, 0, 0,
-                0, 0, a, b,
-                0, 0, 1, 0 });
-        Matrix pv = projection.multiply(ver);
+        double[] ver = {v.x, v.y, v.z, 1};
+        double[][] projection = {
+                {h, 0, 0, 0},
+                {0, w, 0, 0},
+                {0, 0, a, b},
+                {0, 0, 1, 0}
+        };
+        double[] pv = Matrix.multiply(projection, ver);
 
-        double xn = pv.data[0] / pv.data[3];
-        double yn = pv.data[1] / pv.data[3];
-        double zn = pv.data[2];
+        double xn = pv[0] / pv[3];
+        double yn = pv[1] / pv[3];
+        double zn = pv[2];
 
         double x = (1 + xn) * width / 2;
         double y = (1 - yn) * height / 2;

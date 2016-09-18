@@ -1,130 +1,39 @@
 package org.dimansel.math3d;
 
-public class Matrix {
-    public double[] data;
-    public int width;
-    public int height;
-
-    public Matrix(int w, int h)
-    {
-        width = w;
-        height = h;
-
-        data = new double[w * h];
+public final class Matrix {
+    public static double[][] multiply(double[][] a, double[][] b) {
+        int m1 = a.length;
+        int n1 = a[0].length;
+        int m2 = b.length;
+        int n2 = b[0].length;
+        if (n1 != m2) throw new RuntimeException("Illegal matrix dimensions.");
+        double[][] c = new double[m1][n2];
+        for (int i = 0; i < m1; i++)
+            for (int j = 0; j < n2; j++)
+                for (int k = 0; k < n1; k++)
+                    c[i][j] += a[i][k] * b[k][j];
+        return c;
     }
 
-    public Matrix(int w, int h, double[] dt)
-    {
-        width = w;
-        height = h;
-
-        if (dt.length != w * h) throw new IllegalArgumentException("Wrong array length");
-        data = dt;
+    public static double[] multiply(double[][] a, double[] x) {
+        int m = a.length;
+        int n = a[0].length;
+        if (x.length != n) throw new RuntimeException("Illegal matrix dimensions.");
+        double[] y = new double[m];
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                y[i] += a[i][j] * x[j];
+        return y;
     }
 
-    public static double dotProduct(double[] m1, double[] m2)
-    {
-        if (m1.length != m2.length) return Double.NaN;
-
-        double res = 0;
-        for (int a = 0; a < m1.length; a++)
-        {
-            res += m1[a] * m2[a];
-        }
-
-        return res;
-    }
-
-    public double[] getRow(int index)
-    {
-        if (index >= height || index < 0) throw new IndexOutOfBoundsException();
-
-        double[] res = new double[width];
-        for (int a = 0; a < width; a++)
-        {
-            res[a] = data[a + width * index];
-        }
-
-        return res;
-    }
-
-    public double[] getColumn(int index)
-    {
-        if (index >= width || index < 0) throw new IndexOutOfBoundsException();
-
-        double[] res = new double[height];
-        for (int a = 0; a < height; a++)
-        {
-            res[a] = data[a * width + index];
-        }
-
-        return res;
-    }
-
-    public double getDeterminant3x3() {
-        if (width != 3 && height != 3) return Double.NaN;
-
-        double det = 0;
-        for (int a = 1; a <= 3; a++) {
-            det += Math.pow(-1, a-1)*data[a-1]*(data[4-(a/2)]*data[8-(a-1)/2]-data[5-(a-1)/2]*data[7-(a/2)]);
-        }
-
+    public static double det3(double[][] a) {
+        int m = a.length;
+        int n = a[0].length;
+        if (m != 3 || n != 3) throw new RuntimeException("Illegal matrix dimensions.");
+        double det =
+                a[0][0]*(a[1][1]*a[2][2] - a[1][2]*a[2][1]) -
+                a[0][1]*(a[1][0]*a[2][2] - a[1][2]*a[2][0]) +
+                a[0][2]*(a[1][0]*a[2][1] - a[1][1]*a[2][0]);
         return det;
-    }
-
-    public Matrix transpose()
-    {
-        double[] dt = new double[width * height];
-
-        for (int a = 0; a < width * height; a++)
-        {
-            dt[a] = data[a * width + (int)(a / height)];
-        }
-
-        return new Matrix(height, width, dt);
-    }
-
-    public Matrix multiply(Matrix m2)
-    {
-        if (this.width != m2.height) return null;
-
-        double[] dt = new double[this.height * m2.width];
-        Matrix res = new Matrix(m2.width, this.height);
-        for (int a = 0; a < res.width; a++)
-        {
-            for (int b = 0; b < res.height; b++)
-            {
-                dt[a + b * res.width] = dotProduct(this.getRow(b), m2.getColumn(a));
-            }
-        }
-
-        res.data = dt;
-        return res;
-    }
-
-    public Matrix sum(Matrix m2)
-    {
-        if (this.width != m2.width || this.height != m2.height) return null;
-
-        double[] dt = new double[this.width * this.height];
-        for (int a = 0; a < dt.length; a++)
-        {
-            dt[a] = this.data[a] + m2.data[a];
-        }
-
-        return new Matrix(this.width, this.height, dt);
-    }
-
-    public Matrix subtract(Matrix m2)
-    {
-        if (this.width != m2.width || this.height != m2.height) return null;
-
-        double[] dt = new double[this.width * this.height];
-        for (int a = 0; a < dt.length; a++)
-        {
-            dt[a] = this.data[a] - m2.data[a];
-        }
-
-        return new Matrix(this.width, this.height, dt);
     }
 }

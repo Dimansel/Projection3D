@@ -2,7 +2,7 @@ package org.dimansel.projection3d;
 
 import java.util.ArrayList;
 
-public class Keyboard {
+public final class Keyboard {
     private static ArrayList<Integer> keys = new ArrayList<>();
 
     public static void addKey(int keyCode) {
@@ -10,8 +10,7 @@ public class Keyboard {
     }
 
     public static void removeKey(int keyCode) {
-        Object o = keyCode;
-        keys.remove(o);
+        keys.remove(Integer.valueOf(keyCode));
     }
 
     public static boolean isKeyDown(int keyCode) {

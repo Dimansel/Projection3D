@@ -45,10 +45,6 @@ public class Vertex3D {
         return new Vertex3D(x, y, z);
     }
 
-    public Matrix toMatrix() {
-        return new Matrix(1, 3, new double[]{x, y, z});
-    }
-
     @Override
     public String toString() {
         return String.valueOf(x) + "; " + String.valueOf(y) + "; " + String.valueOf(z);
@@ -58,7 +54,6 @@ public class Vertex3D {
     public boolean equals(Object o) {
         if (!(o instanceof Vertex3D)) return false;
         Vertex3D v = (Vertex3D)o;
-        if (v.x != x || v.y != y || v.z != z) return false;
-        return true;
+        return v.x == x && v.y == y && v.z == z;
     }
 }
