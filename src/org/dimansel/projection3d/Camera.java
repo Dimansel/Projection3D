@@ -9,6 +9,8 @@ public class Camera {
     public double yaw = 0; //camera orientation
     public double pitch = 0;
     public double roll = 0;
+    private final int max_pitch = 90;
+    private final int min_pitch = -90;
     private int width; //screen width and height
     private int height;
     private double fov; //field of view angle
@@ -61,7 +63,7 @@ public class Camera {
         return new Vertex3D(v.x - pos.x, v.y - pos.y, v.z - pos.z);
     }
 
-    private Vertex3D rotate(Vertex3D v)
+    /*private Vertex3D rotate(Vertex3D v)
     {
         Matrix yawRotation = new Matrix(3, 3, new double[] {
                 Trig.cos(yaw), 0, -Trig.sin(yaw),
@@ -78,6 +80,20 @@ public class Camera {
         Matrix result = pitchRotation.multiply(yawRotation).multiply(rollRotation).multiply(v.toMatrix());
 
         return new Vertex3D(result.data[0], result.data[1], result.data[2]);
+    }*/
+
+    private Vertex3D rotate(Vertex3D v) {
+        Quaternion q1 = new Quaternion(0, 0, -Trig.sin(roll/2), Trig.cos(roll/2));
+        Quaternion r1 = q1.conjugate();
+        Quaternion xr = q1.multiply(new Quaternion(1, 0, 0, 0)).multiply(r1);
+        Quaternion yr = q1.multiply(new Quaternion(0, 1, 0, 0)).multiply(r1);
+        Quaternion q2 = xr.multiply(-Trig.sin(pitch/2)).add(0, 0, 0, Trig.cos(pitch/2));
+        Quaternion r2 = q2.conjugate();
+        Quaternion yrr = q2.multiply(yr).multiply(r2);
+        Quaternion q3 = yrr.multiply(-Trig.sin(yaw/2)).add(0, 0, 0, Trig.cos(yaw/2));
+        Quaternion r3 = q3.conjugate();
+        Quaternion res = q3.multiply(q2).multiply(q1).multiply(new Quaternion(v.x, v.y, v.z, 0)).multiply(r1).multiply(r2).multiply(r3);
+        return new Vertex3D(res.x, res.y, res.z);
     }
 
     public void processKeyboard(double len) {
@@ -89,22 +105,22 @@ public class Camera {
         boolean flyDown = Keyboard.isKeyDown(KeyEvent.VK_SHIFT);
 
         if (keyUp && !keyDown) {
-            pos.x += len*/*Trig.cos(pitch)*/Trig.sin(yaw);
+            pos.x += len*Trig.sin(yaw);
             //pos.y -= len*Trig.sin(pitch);
-            pos.z += len*/*Trig.cos(pitch)*/Trig.cos(yaw);
+            pos.z += len*Trig.cos(yaw);
         }
         if (keyDown && !keyUp) {
-            pos.x -= len*/*Trig.cos(pitch)*/Trig.sin(yaw);
+            pos.x -= len*Trig.sin(yaw);
             //pos.y += len*Trig.sin(pitch);
-            pos.z -= len*/*Trig.cos(pitch)*/Trig.cos(yaw);
+            pos.z -= len*Trig.cos(yaw);
         }
         if (keyLeft && !keyRight) {
-            pos.x -= len*/*Trig.cos(pitch)*/Trig.cos(yaw);
-            pos.z += len*/*Trig.cos(pitch)*/Trig.sin(yaw);
+            pos.x -= len*Trig.cos(yaw);
+            pos.z += len*Trig.sin(yaw);
         }
         if (keyRight && !keyLeft) {
-            pos.x += len*/*Trig.cos(pitch)*/Trig.cos(yaw);
-            pos.z -= len*/*Trig.cos(pitch)*/Trig.sin(yaw);
+            pos.x += len*Trig.cos(yaw);
+            pos.z -= len*Trig.sin(yaw);
         }
         if (flyUp && !flyDown) {
             pos.y += len;
@@ -115,8 +131,6 @@ public class Camera {
     }
 
     public void processMouse(double dx, double dy) {
-        final int max_yaw = 90;
-        final int min_yaw = -90;
         dx *= 0.16;
         dy *= 0.16;
 
@@ -128,12 +142,12 @@ public class Camera {
             yaw += dx;
         }
 
-        if (pitch + dy >= min_yaw && pitch + dy <= max_yaw) {
+        if (pitch + dy >= min_pitch && pitch + dy <= max_pitch) {
             pitch += dy;
-        } else if (pitch + dy < min_yaw) {
-            pitch = min_yaw;
-        } else if (pitch + dy > max_yaw) {
-            pitch = max_yaw;
+        } else if (pitch + dy < min_pitch) {
+            pitch = min_pitch;
+        } else if (pitch + dy > max_pitch) {
+            pitch = max_pitch;
         }
     }
 }

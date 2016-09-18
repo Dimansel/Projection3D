@@ -29,6 +29,46 @@ public class Triangle {
         gouraudShading = true;
     }
 
+    /*public void render (int[] data, double[] zbuffer, int width) {
+        int xmin = Math.max(0, (int)Math.min(v1.x, Math.min(v2.x, v3.x)));
+        int xmax = Math.min(width, (int)Math.max(v1.x, Math.max(v2.x, v3.x)));
+        int ymin = Math.max(0, (int)Math.min(v1.y, Math.min(v2.y, v3.y)));
+        int ymax = Math.min(data.length/width, (int)Math.max(v1.y, Math.max(v2.y, v3.y)));
+
+        for (int y = ymin; y <= ymax; y++) {
+            int x1 = getIntersection((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, y, xmin, xmax);
+            int x2 = getIntersection((int)v1.x, (int)v1.y, (int)v3.x, (int)v3.y, y, xmin, xmax);
+            int x3 = getIntersection((int)v2.x, (int)v2.y, (int)v3.x, (int)v3.y, y, xmin, xmax);
+            int lb = 0;
+            int rb = Math.max(Math.max(x1, x2), x3);
+            if (x1 == -1) lb = Math.min(x2, x3);
+            else if (x2 == -1) lb = Math.min(x1, x3);
+            else if (x3 == -1) lb = Math.min(x1, x2);
+            else lb = Math.min(Math.min(x1, x2), x3);
+            for (int x = lb; x <= rb; x++) {
+                double z = interpolateZ(x, y);
+
+                if (z < zbuffer[x+y*width]) {
+                    zbuffer[x+y*width] = z;
+                    data[x+y*width] = gouraudShading ? interpolateColor(x, y) : rgbToHex(c.getRed(), c.getGreen(), c.getBlue());
+                }
+            }
+        }
+    }
+
+    private int getIntersection(int x1, int y1, int x2, int y2, int y0, int xmin, int xmax) {
+        if (y1 == y2) {
+            return -1;
+        }
+
+        int x = (x2*y1-x1*y2+(x1-x2)*y0)/(y1-y2);
+        if (x < xmin || x > xmax) {
+            return -1;
+        }
+
+        return x;
+    }*/
+
     public void render (int[] data, double[] zbuffer, int width) {
         int xmin = (int)Math.min(v1.x, Math.min(v2.x, v3.x));
         int xmax = (int)Math.max(v1.x, Math.max(v2.x, v3.x));
