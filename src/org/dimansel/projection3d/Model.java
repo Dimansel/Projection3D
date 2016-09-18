@@ -13,18 +13,17 @@ public class Model {
     private ArrayList<Vertex3D> vertexNormals;
     private ArrayList<Triangle> triangles;
     public Vertex3D position;
-    public Color color;
+    public IShader shader;
     public boolean backFaceCulling = true;
-    public boolean gouraudShading = false;
 
-    public Model(ArrayList<Vertex3D> vertices, ArrayList<Face> faces, ArrayList<Vertex3D> vertexNormals) {
+    public Model(ArrayList<Vertex3D> vertices, ArrayList<Face> faces, ArrayList<Vertex3D> vertexNormals, IShader shader) {
         this.vertices = vertices;
         this.faces = faces;
         triangles = new ArrayList<>();
         this.vertexNormals = vertexNormals;
         faceNormals = new ArrayList<>();
         position = new Vertex3D();
-        color = Color.white;
+        this.shader = shader;
 
         calculateFaceNormals();
         if (vertexNormals.size() != vertices.size() || faces.get(0).n == -1) {
@@ -53,16 +52,11 @@ public class Model {
             };
 
             if (Matrix.det3(m) >= 0 || !backFaceCulling) {
-                if (gouraudShading) {
-                    Color c1 = applyGouraudShading(w1, lightPos, vertexNormals.get(faces.get(a).n - 1));
-                    Color c2 = applyGouraudShading(w2, lightPos, vertexNormals.get(faces.get(a + 1).n - 1));
-                    Color c3 = applyGouraudShading(w3, lightPos, vertexNormals.get(faces.get(a + 2).n - 1));
-                    triangles.add(new Triangle(v1, v2, v3, c1, c2, c3));
-                }
-                else {
-                    Color c = applyFlatShading(w1, w2, w3, lightPos, faceNormals.get(a / 3));
-                    triangles.add(new Triangle(v1, v2, v3, c));
-                }
+                Vertex3D vn1 = vertexNormals.get(faces.get(a).n - 1);
+                Vertex3D vn2 = vertexNormals.get(faces.get(a+1).n - 1);
+                Vertex3D vn3 = vertexNormals.get(faces.get(a+2).n - 1);
+                Vertex3D fn = faceNormals.get(a / 3);
+                triangles.add(new Triangle(v1, v2, v3, w1, w2, w3, vn1, vn2, vn3, fn, lightPos, this));
             }
         }
     }
@@ -106,25 +100,6 @@ public class Model {
             vNormal.normalize();
             vertexNormals.add(vNormal);
         }
-    }
-
-    private Color applyFlatShading(Vertex3D w1, Vertex3D w2, Vertex3D w3, Vertex3D lightPos, Vertex3D normal) {
-        Vertex3D tC = new Vertex3D((w1.x+w2.x+w3.x)/3, (w1.y+w2.y+w3.y)/3, (w1.z+w2.z+w3.z)/3);
-        Vertex3D lightVec = new Vertex3D(lightPos.x - tC.x, lightPos.y - tC.y, lightPos.z - tC.z);
-        lightVec.normalize();
-        double cos = Math.max(0, normal.dot(lightVec));
-        Color c = new Color((int)(cos*color.getRed()), (int)(cos*color.getGreen()), (int)(cos*color.getBlue()));
-
-        return c;
-    }
-
-    private Color applyGouraudShading(Vertex3D w1, Vertex3D lightPos, Vertex3D normal) {
-        Vertex3D lightVec = new Vertex3D(lightPos.x-w1.x, lightPos.y-w1.y, lightPos.z-w1.z);
-        lightVec.normalize();
-        double cos = Math.max(0, normal.dot(lightVec));
-        Color c = new Color((int)(cos*color.getRed()), (int)(cos*color.getGreen()), (int)(cos*color.getBlue()));
-
-        return c;
     }
 
     public void Render(int[] data, double[] zbuffer, int width) {

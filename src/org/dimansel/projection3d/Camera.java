@@ -64,25 +64,6 @@ public class Camera {
         return new Vertex3D(v.x - pos.x, v.y - pos.y, v.z - pos.z);
     }
 
-    /*private Vertex3D rotate(Vertex3D v)
-    {
-        Matrix yawRotation = new Matrix(3, 3, new double[] {
-                Trig.cos(yaw), 0, -Trig.sin(yaw),
-                0, 1, 0,
-                Trig.sin(yaw), 0, Trig.cos(yaw) });
-        Matrix pitchRotation = new Matrix(3, 3, new double[] {
-                1, 0, 0,
-                0, Trig.cos(pitch), Trig.sin(pitch),
-                0, -Trig.sin(pitch), Trig.cos(pitch) });
-        Matrix rollRotation = new Matrix(3, 3, new double[] {
-                Trig.cos(roll), Trig.sin(roll), 0,
-                -Trig.sin(roll), Trig.cos(roll), 0,
-                0, 0, 1 });
-        Matrix result = pitchRotation.multiply(yawRotation).multiply(rollRotation).multiply(v.toMatrix());
-
-        return new Vertex3D(result.data[0], result.data[1], result.data[2]);
-    }*/
-
     private Vertex3D rotate(Vertex3D v) {
         Quaternion q1 = new Quaternion(0, 0, -Trig.sin(roll/2), Trig.cos(roll/2));
         Quaternion r1 = q1.conjugate();

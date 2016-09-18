@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class OBJModelLoader {
-    public static Model load(String path, double multiplier)
+public final class OBJModelLoader {
+    public static Model load(String path, IShader shader, double multiplier)
     {
         File file = new File(path);
         if (!file.exists()) return null;
@@ -53,6 +53,6 @@ public class OBJModelLoader {
             return null;
         }
 
-        return new Model(vertices, faces, normals);
+        return new Model(vertices, faces, normals, shader);
     }
 }
