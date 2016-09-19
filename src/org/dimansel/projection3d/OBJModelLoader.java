@@ -15,7 +15,6 @@ public final class OBJModelLoader {
         if (!file.exists()) return null;
 
         ArrayList<Vertex3D> vertices = new ArrayList<>();
-        ArrayList<Vertex3D> normals = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))){
             for(String line; (line = br.readLine()) != null;)
@@ -25,11 +24,6 @@ public final class OBJModelLoader {
                     if (data.length != 4) continue;
 
                     vertices.add(new Vertex3D(Double.parseDouble(data[1]) * multiplier, Double.parseDouble(data[2]) * multiplier, Double.parseDouble(data[3]) * multiplier));
-                } else if (line.startsWith("vn ")) {
-                    String[] data = line.split(" ");
-                    if (data.length != 4) continue;
-
-                    normals.add(new Vertex3D(Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3])));
                 } else if (line.startsWith("f ")) {
                     String[] data = line.split(" ");
                     if (data.length != 4) continue;
@@ -41,19 +35,13 @@ public final class OBJModelLoader {
                     int f2 = Integer.parseInt(fn2[0]);
                     int f3 = Integer.parseInt(fn3[0]);
 
-                    int n1 = fn1.length == 2 ? Integer.parseInt(fn1[1]) : -1;
-                    int n2 = fn2.length == 2 ? Integer.parseInt(fn2[1]) : -1;
-                    int n3 = fn3.length == 2 ? Integer.parseInt(fn3[1]) : -1;
-
-                    faces.add(new Face(f1, n1));
-                    faces.add(new Face(f2, n2));
-                    faces.add(new Face(f3, n3));
+                    faces.add(new Face(f1, f2, f3));
                 }
             }
         } catch (Exception e) {
             return null;
         }
 
-        return new Model(vertices, faces, normals, shader);
+        return new Model(vertices, faces, shader);
     }
 }

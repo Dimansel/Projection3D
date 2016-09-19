@@ -37,10 +37,6 @@ public class Vertex3D {
         return new Vertex3D(x*val, y*val, z*val);
     }
 
-    public Vertex3D divide(double val) {
-        return new Vertex3D(x/val, y/val, z/val);
-    }
-
     public Vertex3D copy() {
         return new Vertex3D(x, y, z);
     }
