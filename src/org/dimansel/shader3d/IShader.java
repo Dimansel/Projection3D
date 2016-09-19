@@ -1,4 +1,4 @@
-package org.dimansel.projection3d;
+package org.dimansel.shader3d;
 
 import org.dimansel.math3d.Vertex3D;
 

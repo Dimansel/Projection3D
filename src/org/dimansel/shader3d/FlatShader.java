@@ -1,4 +1,4 @@
-package org.dimansel.projection3d;
+package org.dimansel.shader3d;
 
 import org.dimansel.math3d.Vertex3D;
 
@@ -17,8 +17,6 @@ public class FlatShader implements IShader {
         Vertex3D tC = new Vertex3D((w1.x+w2.x+w3.x)/3, (w1.y+w2.y+w3.y)/3, (w1.z+w2.z+w3.z)/3);
         Vertex3D lightVec = new Vertex3D(lightPos.x - tC.x, lightPos.y - tC.y, lightPos.z - tC.z);
         lightVec.normalize();
-        //Vertex3D normal = new Vertex3D((vn1.x+vn2.x+vn3.x)/3, (vn1.y+vn2.y+vn3.y)/3, (vn1.z+vn2.z+vn3.z)/3);
-        //normal.normalize();
         double cos = Math.max(0, fn.dot(lightVec));
         shaded = new Color((int)(cos*color.getRed()), (int)(cos*color.getGreen()), (int)(cos*color.getBlue()));
     }

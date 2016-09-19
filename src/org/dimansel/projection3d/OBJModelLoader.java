@@ -1,6 +1,7 @@
 package org.dimansel.projection3d;
 
 import org.dimansel.math3d.Vertex3D;
+import org.dimansel.shader3d.IShader;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -2,8 +2,8 @@ package org.dimansel.projection3d;
 
 import org.dimansel.math3d.Matrix;
 import org.dimansel.math3d.Vertex3D;
+import org.dimansel.shader3d.IShader;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Model {
