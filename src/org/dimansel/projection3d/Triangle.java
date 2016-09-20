@@ -110,7 +110,7 @@ public class Triangle {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
     }
 
-    public double interpolateZ(int x, int y) {
+    private double interpolateZ(int x, int y) {
         Vertex3D vv1 = v1.copy();
         Vertex3D vv2 = v2.copy();
         Vertex3D vv3 = v3.copy();
@@ -128,11 +128,11 @@ public class Triangle {
         return 1/z;
     }
 
-    public double area(Vertex3D vt1, Vertex3D vt2, Vertex3D vt3) {
+    private double area(Vertex3D vt1, Vertex3D vt2, Vertex3D vt3) {
         return (vt3.x - vt1.x) * (vt2.y - vt1.y) - (vt3.y - vt1.y) * (vt2.x - vt1.x);
     }
 
-    public static int rgbToHex(int r, int g, int b) {
+    private static int rgbToHex(int r, int g, int b) {
         return ((r << 16) + (g << 8) + b) | 0xFF000000;
     }
 }

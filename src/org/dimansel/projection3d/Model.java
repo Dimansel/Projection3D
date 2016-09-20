@@ -53,20 +53,19 @@ public class Model {
 
         for (int a = 0; a < vertices.size(); a++) {
             Vertex3D vNormal = new Vertex3D();
-            for (int b = 0; b < faces.size(); b++) {
-                Face f = faces.get(b);
-                int vi = f.contains(a+1);
+            for (Face f : faces) {
+                int vi = f.contains(a + 1);
                 if (vi != -1) {
-                    f.vn[vi] = a+1;
-                    Vertex3D w1 = vertices.get(f.v[vi]-1);
-                    Vertex3D w2 = vertices.get(f.v[(vi+1)%3]-1);
-                    Vertex3D w3 = vertices.get(f.v[(vi+2)%3]-1);
-                    Vertex3D vec1 = new Vertex3D(w2.x-w1.x, w2.y-w1.y, w2.z-w1.z);
-                    Vertex3D vec2 = new Vertex3D(w3.x-w1.x, w3.y-w1.y, w3.z-w1.z);
+                    f.vn[vi] = a + 1;
+                    Vertex3D w1 = vertices.get(f.v[vi] - 1);
+                    Vertex3D w2 = vertices.get(f.v[(vi + 1) % 3] - 1);
+                    Vertex3D w3 = vertices.get(f.v[(vi + 2) % 3] - 1);
+                    Vertex3D vec1 = new Vertex3D(w2.x - w1.x, w2.y - w1.y, w2.z - w1.z);
+                    Vertex3D vec2 = new Vertex3D(w3.x - w1.x, w3.y - w1.y, w3.z - w1.z);
                     vec1.normalize();
                     vec2.normalize();
                     double angle = Math.acos(vec1.dot(vec2));
-                    vNormal = vNormal.sum(faceNormals.get(f.fn-1).multiply(angle));
+                    vNormal = vNormal.sum(faceNormals.get(f.fn - 1).multiply(angle));
                 }
             }
             vNormal.normalize();
@@ -77,11 +76,10 @@ public class Model {
     public void projectVertices(Camera cam, Vertex3D lightPos) {
         triangles.clear();
 
-        for (int a = 0; a < faces.size(); a++) {
-            Face f = faces.get(a);
-            Vertex3D w1 = vertices.get(f.v[0]-1);
-            Vertex3D w2 = vertices.get(f.v[1]-1);
-            Vertex3D w3 = vertices.get(f.v[2]-1);
+        for (Face f : faces) {
+            Vertex3D w1 = vertices.get(f.v[0] - 1).sum(position);
+            Vertex3D w2 = vertices.get(f.v[1] - 1).sum(position);
+            Vertex3D w3 = vertices.get(f.v[2] - 1).sum(position);
 
             Vertex3D v1 = cam.project(w1);
             Vertex3D v2 = cam.project(w2);
@@ -89,8 +87,8 @@ public class Model {
 
             if (v1 == null || v2 == null || v3 == null) continue;
             double[][] m = {
-                    {v2.x-v1.x, v3.x-v1.x, v1.x},
-                    {v2.y-v1.y, v3.y-v1.y, v1.y},
+                    {v2.x - v1.x, v3.x - v1.x, v1.x},
+                    {v2.y - v1.y, v3.y - v1.y, v1.y},
                     {0, 0, 1}
             };
 
@@ -98,14 +96,13 @@ public class Model {
                 Vertex3D vn1 = vertexNormals.get(f.vn[0] - 1);
                 Vertex3D vn2 = vertexNormals.get(f.vn[1] - 1);
                 Vertex3D vn3 = vertexNormals.get(f.vn[2] - 1);
-                Vertex3D fn = faceNormals.get(f.fn-1);
+                Vertex3D fn = faceNormals.get(f.fn - 1);
                 triangles.add(new Triangle(v1, v2, v3, w1, w2, w3, vn1, vn2, vn3, fn, lightPos, this));
             }
         }
     }
 
     public void Render(int[] data, double[] zbuffer, int width) {
-        for (int a = 0; a < triangles.size(); a++)
-            triangles.get(a).render(data, zbuffer, width);
+        for (Triangle triangle : triangles) triangle.render(data, zbuffer, width);
     }
 }

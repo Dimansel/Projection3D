@@ -64,7 +64,7 @@ public class GouraudShader implements IShader {
         return new Color((int)r, (int)g, (int)b);
     }
 
-    public double area(Vertex3D vt1, Vertex3D vt2, Vertex3D vt3) {
+    private double area(Vertex3D vt1, Vertex3D vt2, Vertex3D vt3) {
         return (vt3.x - vt1.x) * (vt2.y - vt1.y) - (vt3.y - vt1.y) * (vt2.x - vt1.x);
     }
 }
