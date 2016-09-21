@@ -18,8 +18,7 @@ public class Camera {
     private double nearPlane; //z coordinate of clipping planes
     private double farPlane;
 
-    public Camera(int width, int height, double fov, double near, double far)
-    {
+    public Camera(int width, int height, double fov, double near, double far) {
         this.width = width;
         this.height = height;
         this.fov = fov;
@@ -28,8 +27,7 @@ public class Camera {
         farPlane = far;
     }
 
-    public Vertex3D project(Vertex3D v)
-    {
+    public Vertex3D project(Vertex3D v) {
         v = translate(v);
         v = rotate(v);
 
@@ -37,20 +35,17 @@ public class Camera {
 
         double h = Trig.cot(fov/2);
         double w = aspect * h;
-        double a = farPlane / (farPlane - nearPlane);
-        double b = -nearPlane * farPlane / (farPlane - nearPlane);
 
-        double[] ver = {v.x, v.y, v.z, 1};
+        double[] ver = {v.x, v.y, v.z};
         double[][] projection = {
-                {h, 0, 0, 0},
-                {0, w, 0, 0},
-                {0, 0, a, b},
-                {0, 0, 1, 0}
+                {h, 0, 0},
+                {0, w, 0},
+                {0, 0, 1}
         };
         double[] pv = Matrix.multiply(projection, ver);
 
-        double xn = pv[0] / pv[3];
-        double yn = pv[1] / pv[3];
+        double xn = pv[0] / v.z;
+        double yn = pv[1] / v.z;
         double zn = pv[2];
 
         double x = (1 + xn) * width / 2;
@@ -59,8 +54,7 @@ public class Camera {
         return new Vertex3D(x, y, zn);
     }
 
-    private Vertex3D translate(Vertex3D v)
-    {
+    private Vertex3D translate(Vertex3D v) {
         return new Vertex3D(v.x - pos.x, v.y - pos.y, v.z - pos.z);
     }
 

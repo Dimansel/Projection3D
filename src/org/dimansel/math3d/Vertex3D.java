@@ -3,14 +3,12 @@ package org.dimansel.math3d;
 public class Vertex3D {
     public double x, y, z;
 
-    public Vertex3D(double xx, double yy, double zz)
-    {
+    public Vertex3D(double xx, double yy, double zz) {
         x = xx;
         y = yy;
         z = zz;
     }
-    public Vertex3D()
-    {
+    public Vertex3D() {
         x = 0;
         y = 0;
         z = 0;

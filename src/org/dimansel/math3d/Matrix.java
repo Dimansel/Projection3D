@@ -30,10 +30,8 @@ public final class Matrix {
         int m = a.length;
         int n = a[0].length;
         if (m != 3 || n != 3) throw new RuntimeException("Illegal matrix dimensions.");
-        double det =
-                a[0][0]*(a[1][1]*a[2][2] - a[1][2]*a[2][1]) -
+        return (a[0][0]*(a[1][1]*a[2][2] - a[1][2]*a[2][1]) -
                 a[0][1]*(a[1][0]*a[2][2] - a[1][2]*a[2][0]) +
-                a[0][2]*(a[1][0]*a[2][1] - a[1][1]*a[2][0]);
-        return det;
+                a[0][2]*(a[1][0]*a[2][1] - a[1][1]*a[2][0]));
     }
 }

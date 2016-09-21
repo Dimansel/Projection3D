@@ -9,16 +9,14 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public final class OBJModelLoader {
-    public static Model load(String path, IShader shader, double multiplier)
-    {
+    public static Model load(String path, IShader shader, double multiplier) {
         File file = new File(path);
         if (!file.exists()) return null;
 
         ArrayList<Vertex3D> vertices = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))){
-            for(String line; (line = br.readLine()) != null;)
-            {
+            for(String line; (line = br.readLine()) != null;) {
                 if (line.startsWith("v ")) {
                     String[] data = line.split(" ");
                     if (data.length != 4) continue;
