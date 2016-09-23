@@ -17,10 +17,14 @@ public class Vertex3D {
     public void normalize() {
         if (Math.abs(x) < 0.00001 && Math.abs(y) < 0.00001 && Math.abs(z) < 0.00001) return;
 
-        double len = Math.sqrt(x*x+y*y+z*z);
+        double len = abs();
         x /= len;
         y /= len;
         z /= len;
+    }
+
+    public double abs() {
+        return Math.sqrt(x*x+y*y+z*z);
     }
 
     public double dot(Vertex3D v) {
@@ -33,10 +37,6 @@ public class Vertex3D {
 
     public Vertex3D multiply(double val) {
         return new Vertex3D(x*val, y*val, z*val);
-    }
-
-    public Vertex3D copy() {
-        return new Vertex3D(x, y, z);
     }
 
     @Override

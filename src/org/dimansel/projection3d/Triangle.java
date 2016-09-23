@@ -111,15 +111,15 @@ public class Triangle {
     }
 
     private double interpolateZ(int x, int y) {
-        Vertex3D vv1 = v1.copy();
-        Vertex3D vv2 = v2.copy();
-        Vertex3D vv3 = v3.copy();
-        vv1.z = 1/vv1.z; vv2.z=1/vv2.z; vv3.z=1/vv3.z;
+        Vertex3D vv1 = new Vertex3D(v1.x, v1.y, 1 / v1.z);
+        Vertex3D vv2 = new Vertex3D(v2.x, v2.y, 1 / v2.z);
+        Vertex3D vv3 = new Vertex3D(v3.x, v3.y, 1 / v3.z);
 
         double a = area(vv1, vv2, vv3);
-        double w1 = area(vv2, vv3, new Vertex3D(x, y, 0));
-        double w2 = area(vv3, vv1, new Vertex3D(x, y, 0));
-        double w3 = area(vv1, vv2, new Vertex3D(x, y, 0));
+        Vertex3D p = new Vertex3D(x, y, 0);
+        double w1 = area(vv2, vv3, p);
+        double w2 = area(vv3, vv1, p);
+        double w3 = area(vv1, vv2, p);
         w1 /= a;
         w2 /= a;
         w3 /= a;
