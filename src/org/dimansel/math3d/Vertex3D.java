@@ -3,28 +3,23 @@ package org.dimansel.math3d;
 public class Vertex3D {
     public double x, y, z;
 
-    public Vertex3D(double xx, double yy, double zz) {
-        x = xx;
-        y = yy;
-        z = zz;
+    public Vertex3D(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public Vertex3D(Quaternion q) {
-        x = q.x;
-        y = q.y;
-        z = q.z;
+        this(q.x, q.y, q.z);
     }
 
     public Vertex3D() {
-        x = 0;
-        y = 0;
-        z = 0;
+        this(0, 0, 0);
     }
 
     public void normalize() {
-        if (Math.abs(x) < 0.00001 && Math.abs(y) < 0.00001 && Math.abs(z) < 0.00001) return;
-
         double len = abs();
+        if (Double.isInfinite(1/len)) return;
         x /= len;
         y /= len;
         z /= len;

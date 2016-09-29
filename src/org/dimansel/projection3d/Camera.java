@@ -25,7 +25,7 @@ public class Camera {
     }
 
     public Vertex3D project(Vertex3D v) {
-        v = translate(v);
+        v = new Vertex3D(v.x - pos.x, v.y - pos.y, v.z - pos.z);
         v = rotate(v);
 
         if (v.z <= nearPlane || v.z > farPlane) return null;
@@ -49,10 +49,6 @@ public class Camera {
         double y = (1 - yn) * height / 2;
 
         return new Vertex3D(x, y, zn);
-    }
-
-    private Vertex3D translate(Vertex3D v) {
-        return new Vertex3D(v.x - pos.x, v.y - pos.y, v.z - pos.z);
     }
 
     private Vertex3D rotate(Vertex3D v) {

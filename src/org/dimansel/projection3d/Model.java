@@ -97,7 +97,7 @@ public class Model {
                 Vertex3D vn2 = vertexNormals.get(f.vn[1] - 1);
                 Vertex3D vn3 = vertexNormals.get(f.vn[2] - 1);
                 Vertex3D fn = faceNormals.get(f.fn - 1);
-                triangles.add(new Triangle(v1, v2, v3, w1, w2, w3, vn1, vn2, vn3, fn, lightPos, this));
+                triangles.add(new Triangle(v1, v2, v3, w1, w2, w3, vn1, vn2, vn3, fn, lightPos, shader));
             }
         }
     }

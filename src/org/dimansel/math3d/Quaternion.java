@@ -11,10 +11,7 @@ public class Quaternion {
     }
 
     public Quaternion(Vertex3D v) {
-        x = v.x;
-        y = v.y;
-        z = v.z;
-        w = 0;
+        this(v.x, v.y, v.z, 0);
     }
 
     public Quaternion conjugate() {
