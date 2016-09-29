@@ -10,6 +10,13 @@ public class Quaternion {
         this.w = w;
     }
 
+    public Quaternion(Vertex3D v) {
+        x = v.x;
+        y = v.y;
+        z = v.z;
+        w = 0;
+    }
+
     public Quaternion conjugate() {
         return new Quaternion(-x, -y, -z, w);
     }
@@ -20,13 +27,5 @@ public class Quaternion {
         double c = z*q.w + q.z*w + x*q.y - q.x*y;
         double d = -(x*q.x + y*q.y + z*q.z - w*q.w);
         return new Quaternion(a, b, c, d);
-    }
-
-    public Quaternion multiply(double k) {
-        return new Quaternion(x*k, y*k, z*k, w*k);
-    }
-
-    public Quaternion add(double x0, double y0, double z0, double w0) {
-        return new Quaternion(x+x0, y+y0, z+z0, w+w0);
     }
 }

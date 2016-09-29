@@ -8,9 +8,6 @@ public class Camera {
     public Vertex3D pos = new Vertex3D(0, 0, 0); //camera position
     public double yaw = 0; //camera orientation
     public double pitch = 0;
-    public double roll = 0;
-    private final int max_pitch = 90;
-    private final int min_pitch = -90;
     private int width; //screen width and height
     private int height;
     private double fov; //field of view angle
@@ -59,17 +56,10 @@ public class Camera {
     }
 
     private Vertex3D rotate(Vertex3D v) {
-        Quaternion q1 = new Quaternion(0, 0, -Trig.sin(roll/2), Trig.cos(roll/2));
-        Quaternion r1 = q1.conjugate();
-        Quaternion xr = q1.multiply(new Quaternion(1, 0, 0, 0)).multiply(r1);
-        Quaternion yr = q1.multiply(new Quaternion(0, 1, 0, 0)).multiply(r1);
-        Quaternion q2 = xr.multiply(-Trig.sin(pitch/2)).add(0, 0, 0, Trig.cos(pitch/2));
-        Quaternion r2 = q2.conjugate();
-        Quaternion yrr = q2.multiply(yr).multiply(r2);
-        Quaternion q3 = yrr.multiply(-Trig.sin(yaw/2)).add(0, 0, 0, Trig.cos(yaw/2));
-        Quaternion r3 = q3.conjugate();
-        Quaternion res = q3.multiply(q2).multiply(q1).multiply(new Quaternion(v.x, v.y, v.z, 0)).multiply(r1).multiply(r2).multiply(r3);
-        return new Vertex3D(res.x, res.y, res.z);
+        Quaternion q1 = new Quaternion(0, -Trig.sin(yaw/2), 0, Trig.cos(yaw/2)); Quaternion r1 = q1.conjugate();
+        Quaternion q2 = new Quaternion(-Trig.sin(pitch/2), 0, 0, Trig.cos(pitch/2)); Quaternion r2 = q2.conjugate();
+        Quaternion p = q2.multiply(q1).multiply(new Quaternion(v)).multiply(r1).multiply(r2);
+        return new Vertex3D(p);
     }
 
     public void processKeyboard(double len) {
@@ -110,20 +100,12 @@ public class Camera {
         dx *= 0.16;
         dy *= 0.16;
 
-        if (yaw + dx >= 360) {
-            yaw += dx - 360;
-        } else if (yaw + dx < 0) {
-            yaw = 360 - yaw + dx;
-        } else {
-            yaw += dx;
-        }
+        if (yaw + dx >= 360) yaw += dx - 360;
+        else if (yaw + dx < 0) yaw = 360 - yaw + dx;
+        else yaw += dx;
 
-        if (pitch + dy >= min_pitch && pitch + dy <= max_pitch) {
-            pitch += dy;
-        } else if (pitch + dy < min_pitch) {
-            pitch = min_pitch;
-        } else if (pitch + dy > max_pitch) {
-            pitch = max_pitch;
-        }
+        if (pitch + dy < -90) pitch = -90;
+        else if (pitch + dy > 90) pitch = 90;
+        else pitch += dy;
     }
 }

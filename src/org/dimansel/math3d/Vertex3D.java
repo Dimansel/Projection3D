@@ -8,6 +8,13 @@ public class Vertex3D {
         y = yy;
         z = zz;
     }
+
+    public Vertex3D(Quaternion q) {
+        x = q.x;
+        y = q.y;
+        z = q.z;
+    }
+
     public Vertex3D() {
         x = 0;
         y = 0;
