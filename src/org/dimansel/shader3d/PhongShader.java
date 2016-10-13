@@ -1,6 +1,5 @@
 package org.dimansel.shader3d;
 
-import org.dimansel.math3d.Trig;
 import org.dimansel.math3d.Vertex3D;
 
 import java.awt.*;
