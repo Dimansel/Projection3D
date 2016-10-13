@@ -33,30 +33,20 @@ public class GouraudShader implements IShader {
 
     @Override
     public Color getColor(int x, int y, Vertex3D v1, Vertex3D v2, Vertex3D v3) {
-        //Barycentric perspective correct interpolation
-        Vertex3D vc1 = new Vertex3D(shaded1.getRed() / v1.z, shaded1.getGreen() / v1.z, shaded1.getBlue() / v1.z);
-        Vertex3D vc2 = new Vertex3D(shaded2.getRed() / v2.z, shaded2.getGreen() / v2.z, shaded2.getBlue() / v2.z);
-        Vertex3D vc3 = new Vertex3D(shaded3.getRed() / v3.z, shaded3.getGreen() / v3.z, shaded3.getBlue() / v3.z);
-        Vertex3D vv1 = new Vertex3D(v1.x, v1.y, 1/v1.z);
-        Vertex3D vv2 = new Vertex3D(v2.x, v2.y, 1/v2.z);
-        Vertex3D vv3 = new Vertex3D(v3.x, v3.y, 1/v3.z);
+        double a = area(v1, v2, v3);
+        Vertex3D p = new Vertex3D(x, y, 0);
+        double w1 = area(v2, v3, p);
+        double w2 = area(v3, v1, p);
+        double w3 = area(v1, v2, p);
+        w1 /= a*v1.z;
+        w2 /= a*v2.z;
+        w3 /= a*v3.z;
+        double z = 1/(w1+w2+w3);
 
-        double a = area(vv1, vv2, vv3);
-        double w1 = area(vv2, vv3, new Vertex3D(x, y, 0));
-        double w2 = area(vv3, vv1, new Vertex3D(x, y, 0));
-        double w3 = area(vv1, vv2, new Vertex3D(x, y, 0));
-        w1 /= a;
-        w2 /= a;
-        w3 /= a;
-
-        double r = w1*vc1.x+w2*vc2.x+w3*vc3.x;
-        double g = w1*vc1.y+w2*vc2.y+w3*vc3.y;
-        double b = w1*vc1.z+w2*vc2.z+w3*vc3.z;
-
-        double z = 1 / (w1*vv1.z + w2*vv2.z + w3*vv3.z);
-        r *= z; g *= z; b *= z;
-
-        return new Color((int)r, (int)g, (int)b);
+        double g1 = shaded1.getRed()*w1+shaded2.getRed()*w2+shaded3.getRed()*w3;
+        double g2 = shaded1.getGreen()*w1+shaded2.getGreen()*w2+shaded3.getGreen()*w3;
+        double g3 = shaded1.getBlue()*w1+shaded2.getBlue()*w2+shaded3.getBlue()*w3;
+        return new Color((int)(z*g1), (int)(z*g2), (int)(z*g3));
     }
 
     private double area(Vertex3D vt1, Vertex3D vt2, Vertex3D vt3) {

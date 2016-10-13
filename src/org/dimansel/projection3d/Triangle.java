@@ -75,21 +75,17 @@ public class Triangle {
     }
 
     private double interpolateZ(int x, int y) {
-        Vertex3D vv1 = new Vertex3D(v1.x, v1.y, 1 / v1.z);
-        Vertex3D vv2 = new Vertex3D(v2.x, v2.y, 1 / v2.z);
-        Vertex3D vv3 = new Vertex3D(v3.x, v3.y, 1 / v3.z);
-
-        double a = area(vv1, vv2, vv3);
+        double a = area(v1, v2, v3);
         Vertex3D p = new Vertex3D(x, y, 0);
-        double w1 = area(vv2, vv3, p);
-        double w2 = area(vv3, vv1, p);
-        double w3 = area(vv1, vv2, p);
+        double w1 = area(v2, v3, p);
+        double w2 = area(v3, v1, p);
+        double w3 = area(v1, v2, p);
         w1 /= a;
         w2 /= a;
         w3 /= a;
 
-        double z = w1*vv1.z+w2*vv2.z+w3*vv3.z;
-        return 1/z;
+        double invZ = w1/v1.z+w2/v2.z+w3/v3.z;
+        return 1/invZ;
     }
 
     private double area(Vertex3D vt1, Vertex3D vt2, Vertex3D vt3) {

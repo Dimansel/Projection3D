@@ -1,6 +1,6 @@
 package org.dimansel.math3d;
 
-public class Trig {
+public final class Trig {
     public static double sin(double a) {
         return Math.sin(Math.toRadians(a));
     }
