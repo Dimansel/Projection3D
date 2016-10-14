@@ -9,10 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public final class OBJModelLoader {
-    public static Model load(String path, IShader shader) {
-        File file = new File(path);
-        if (!file.exists()) return null;
-
+    public static Model load(File file, IShader shader) {
         ArrayList<Vertex3D> vertices = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))){
