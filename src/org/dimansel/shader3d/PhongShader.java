@@ -40,14 +40,13 @@ public class PhongShader implements IShader {
         w2 /= a*v2.z;
         w3 /= a*v3.z;
         double z = 1/(w1+w2+w3);
-
         double g1 = vn1.x*w1+vn2.x*w2+vn3.x*w3;
         double g2 = vn1.y*w1+vn2.y*w2+vn3.y*w3;
         double g3 = vn1.z*w1+vn2.z*w2+vn3.z*w3;
         Vertex3D iV = new Vertex3D(z*g1, z*g2, z*g3);
-        Vertex3D point = new Vertex3D((vt1.x*w1+vt2.x*w2+vt3.x*w3)*z, (vt1.y*w1+vt2.y*w2+vt3.y*w3)*z, z);
+        Vertex3D point = new Vertex3D((vt1.x*w1+vt2.x*w2+vt3.x*w3)*z, (vt1.y*w1+vt2.y*w2+vt3.y*w3)*z, (vt1.z*w1+vt2.z*w2+vt3.z*w3)*z);
         iV.normalize();
-        Vertex3D lightVec = new Vertex3D(lightPos.x - point.x, lightPos.y - point.y, lightPos.z - point.z);
+        Vertex3D lightVec = new Vertex3D(lightPos.x-point.x, lightPos.y-point.y, lightPos.z-point.z);
         lightVec.normalize();
         double cos = Math.max(0, iV.dot(lightVec));
         return new Color((int)(cos*color.getRed()), (int)(cos*color.getGreen()), (int)(cos*color.getBlue()));

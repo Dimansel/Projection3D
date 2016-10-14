@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public final class OBJModelLoader {
-    public static Model load(String path, IShader shader, double multiplier) {
+    public static Model load(String path, IShader shader) {
         File file = new File(path);
         if (!file.exists()) return null;
 
@@ -21,7 +21,11 @@ public final class OBJModelLoader {
                     String[] data = line.split(" ");
                     if (data.length != 4) continue;
 
-                    vertices.add(new Vertex3D(Double.parseDouble(data[1]) * multiplier, Double.parseDouble(data[2]) * multiplier, Double.parseDouble(data[3]) * multiplier));
+                    vertices.add(new Vertex3D(
+                            Double.parseDouble(data[1]),
+                            Double.parseDouble(data[2]),
+                            Double.parseDouble(data[3]))
+                    );
                 } else if (line.startsWith("f ")) {
                     String[] data = line.split(" ");
                     if (data.length != 4) continue;

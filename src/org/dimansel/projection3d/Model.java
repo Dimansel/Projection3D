@@ -12,8 +12,8 @@ public class Model {
     private ArrayList<Vertex3D> faceNormals;
     private ArrayList<Vertex3D> vertexNormals;
     private ArrayList<Triangle> triangles;
-    public Vertex3D position;
-    public IShader shader;
+    public Vertex3D position = new Vertex3D();
+    private IShader shader;
     public boolean backFaceCulling = true;
 
     public Model(ArrayList<Vertex3D> vertices, ArrayList<Face> faces, IShader shader) {
@@ -22,7 +22,6 @@ public class Model {
         triangles = new ArrayList<>();
         faceNormals = new ArrayList<>();
         vertexNormals = new ArrayList<>();
-        position = new Vertex3D();
         this.shader = shader;
 
         calculateFaceNormals();
