@@ -6,8 +6,8 @@ import java.awt.event.KeyEvent;
 
 public class Camera {
     public Vertex3D pos = new Vertex3D(0, 0, 0); //camera position
-    public double yaw = 0; //camera orientation
-    public double pitch = 0;
+    private double yaw = 0; //camera orientation
+    private double pitch = 0;
     private int width; //screen width and height
     private int height;
     private double fov; //field of view angle

@@ -4,15 +4,14 @@ import org.dimansel.math3d.Vertex3D;
 import org.dimansel.shader3d.IShader;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.Reader;
 import java.util.ArrayList;
 
 public final class OBJModelLoader {
-    public static Model load(File file, IShader shader) {
+    public static Model load(Reader reader, IShader shader) {
         ArrayList<Vertex3D> vertices = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))){
+        try (BufferedReader br = new BufferedReader(reader)){
             for(String line; (line = br.readLine()) != null;) {
                 if (line.startsWith("v ")) {
                     String[] data = line.split(" ");
